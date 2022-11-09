@@ -1,14 +1,14 @@
-import { useMemo } from 'react';
+import { useMemo, useRef, useCallback, useEffect, useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 import { useQuery } from "@apollo/client";
 import POKEMONS from '../graphql/query/getPokemons';
 import { Pokemon } from '../models/pokemon';
-import { relative } from 'path';
 
 export default function Home() {
-  const { data, loading } = useQuery(POKEMONS);
+  const [offset, setOffset] = useState(0);
+  const { data, loading, fetchMore } = useQuery(POKEMONS, { variables: { offset: 0 } });
 
   const count = useMemo(() => {
     return data?.aggregate?.aggregate?.count || 0;
@@ -21,6 +21,47 @@ export default function Home() {
       return pokemon;
     });
   }, [data]);
+
+  const handleNextFetch = useCallback(() => {
+    if (loading) return;
+    setOffset(off => off + 10);
+    fetchMore({
+      variables: { offset: offset + 10 },
+      updateQuery: (prevResult, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prevResult;
+        return {
+          ...fetchMoreResult,
+          pokemons: [...prevResult.pokemons, ...fetchMoreResult.pokemons],
+        }
+      }
+    })
+  }, [count, loading, offset])
+
+
+  const handleObserver = useCallback((entries: any) => {
+    const target = entries[0];
+    if (target.isIntersecting) {
+      handleNextFetch();
+    }
+  }, [handleNextFetch]);
+
+  useEffect(() => {
+    if (loading) return;
+
+    const observe = setTimeout(() => {
+      const option = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0
+      };
+      const observer = new IntersectionObserver(handleObserver, option);
+      if (loader.current) observer.observe(loader.current);
+    }, 1000);
+
+    return () => clearTimeout(observe);
+  }, [handleObserver, loading]);
+
+  const loader = useRef(null);
 
   return (
     <div className={styles.container}>
@@ -47,6 +88,7 @@ export default function Home() {
                   src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${el.id}.png`}
                   width={82}
                   height={82}
+                  className={styles.pokemonImage}
                 />
               </div>
               <p>#{el.id}</p>
@@ -54,6 +96,7 @@ export default function Home() {
             </a>)
           }
         </div>
+        <div ref={loader}></div>
       </main>
     </div>
   )

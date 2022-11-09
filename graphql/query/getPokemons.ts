@@ -1,7 +1,13 @@
 import { gql } from '@apollo/client';
 export default gql`
-  query POKEMONS {
-    pokemons: pokemon_v2_pokemonspecies(limit: 10, order_by: {id: asc}) {
+  query POKEMONS(
+    $offset: Int = 0
+  ){
+    pokemons: pokemon_v2_pokemonspecies(
+      limit: 10, 
+      order_by: {id: asc}, 
+      offset: $offset
+    ) {
       name
       id
       details: pokemon_v2_pokemons {
