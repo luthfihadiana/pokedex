@@ -35,7 +35,7 @@ export default function Home() {
         }
       }
     })
-  }, [count, loading, offset])
+  }, [count, loading, offset, fetchMore])
 
 
   const handleObserver = useCallback((entries: any) => {
@@ -78,22 +78,24 @@ export default function Home() {
 
         <div className={styles.grid}>
           {
-            pokemons.map((el: Pokemon) => <a
-              href={`/${el.name}`}
-              className={styles.card}
-            >
-              <div className={styles.imageContainer}>
-                <Image
-                  alt={`pokemon-${el.id}`}
-                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${el.id}.png`}
-                  width={82}
-                  height={82}
-                  className={styles.pokemonImage}
-                />
-              </div>
-              <p>#{el.id}</p>
-              <h2>{el.name}</h2>
-            </a>)
+            pokemons.map((el: Pokemon) =>
+              <a
+                key={`list-pokemon-${el?.id}`}
+                href={`/${el.name}`}
+                className={styles.card}
+              >
+                <div className={styles.imageContainer}>
+                  <Image
+                    alt={`pokemon-${el.id}`}
+                    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${el.id}.png`}
+                    width={82}
+                    height={82}
+                    className={styles.pokemonImage}
+                  />
+                </div>
+                <p>#{el.id}</p>
+                <h2>{el.name}</h2>
+              </a>)
           }
         </div>
         <div ref={loader}></div>

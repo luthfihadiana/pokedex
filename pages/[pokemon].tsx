@@ -73,8 +73,8 @@ const PokemonPage: NextPage = () => {
           <h2 className={styles.title}>Base Stats</h2>
           <div className={styles.grid}>
             {
-              pokemonData?.pokemonDetail?.[0]?.stats?.map((el: any) =>
-                <div className={styles.stat}>
+              pokemonData?.pokemonDetail?.[0]?.stats?.map((el: any, idx: number) =>
+                <div className={styles.stat} key={`stat-${idx}`}>
                   <p className={styles.label}>{el?.stat?.name}</p>
                   <p className={styles.val}>
                     {el?.base_stat}
