@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 export default gql`
   query POKEMONS {
-    pokemons: pokemon_v2_pokemonspecies(limit: 10) {
+    pokemons: pokemon_v2_pokemonspecies(limit: 10, order_by: {id: asc}) {
       name
       id
       details: pokemon_v2_pokemons {
