@@ -7,7 +7,7 @@
   --success_hover: #87b346;
   --black: #434a54;
   --green: #00e676;
-  --grey: #e6e9ed;
+  --grey: #9e9fa0;
   --primaryFont: "Montserrat", sans-serif;
   --titleFont: "Varela Round", sans-serif;
 }
@@ -45,10 +45,10 @@ h6 {
   font-family: var(--titleFont);
 }
 h1 {
-  font-size: 2.4rem;
+  font-size: 2.8rem;
 }
 h2 {
-  font-size: 2.2rem;
+  font-size: 2.4rem;
 }
 h3 {
   font-size: 2rem;
@@ -60,5 +60,5 @@ h5 {
   font-size: 1.6rem;
 }
 p {
-  font-size: 1.2rem;
+  font-size: 1.6rem;
 }

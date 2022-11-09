@@ -1,0 +1,68 @@
+.container {
+  padding: 0 1.6rem;
+  display: grid;
+  place-items: center;
+}
+
+.title {
+  text-transform: capitalize;
+}
+
+.main {
+  min-height: 100vh;
+  padding: 4rem 0;
+  width: 100%;
+  max-width: 768px;
+}
+
+.pokemonImage{
+  width: 50%;
+  height: auto;
+}
+
+.stat{
+  width: 100%;
+  display: flex;
+}
+
+.stat .label{
+  flex: 1;
+  color: var(--grey);
+  text-transform: capitalize;
+}
+
+.stat .val{
+  flex: 2;
+}
+
+.section{
+  margin-top: 1.6rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  width: 100%;
+}
+
+.imageContainer {
+  position: relative;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.pokemonImage{
+  width: 30%;
+  min-width: 120px;
+  height: auto;
+}
+
+@media only screen and (min-width: 426px){
+  .backButton{
+    top: 1.5rem;
+  }
+  .container{
+    padding: 0 2rem;
+  }
+}

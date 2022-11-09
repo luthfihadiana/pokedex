@@ -23,7 +23,7 @@ export default function Home() {
   }, [data]);
 
   const handleNextFetch = useCallback(() => {
-    if (loading) return;
+    if (loading || count < offset + 10) return;
     setOffset(off => off + 10);
     fetchMore({
       variables: { offset: offset + 10 },
@@ -79,7 +79,7 @@ export default function Home() {
         <div className={styles.grid}>
           {
             pokemons.map((el: Pokemon) => <a
-              href="https://github.com/vercel/next.js/tree/canary/examples"
+              href={`/${el.name}`}
               className={styles.card}
             >
               <div className={styles.imageContainer}>
