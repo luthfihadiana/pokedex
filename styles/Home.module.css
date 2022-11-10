@@ -4,6 +4,20 @@
   place-items: center;
 }
 
+.action {
+  display: flex;
+}
+.action > *:not(:last-child) {
+  margin-right: 0.8rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .main {
   min-height: 100vh;
   padding: 4rem 0;
@@ -31,11 +45,34 @@
   display: flex;
   flex-direction: column;
   transition: color 0.15s ease, border-color 0.15s ease;
+  position: relative;
 }
 
 .pokemonImage{
   width: 50%;
   height: auto;
+}
+
+.selector {
+  border: 1px solid var(--grey);
+  border-radius: 10px;
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  right: 1.6rem;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.selector.disable{
+  cursor: not-allowed;
+  background-color: var(--grey);
+}
+
+.selector.selected{
+  background-color: var(--success);
+  border: none;
+  transition: all 0.2s ease-in;
 }
 
 .card:hover,

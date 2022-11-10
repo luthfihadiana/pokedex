@@ -62,3 +62,16 @@ h5 {
 p {
   font-size: 1.6rem;
 }
+button {
+  all: unset;
+  font-size: 1.8rem;
+  cursor: pointer;
+  padding: 0.8rem 1.6rem;
+  border: 1px solid var(--grey);
+  border-radius: 10px;
+  transition: all 0.2s ease-in;
+}
+
+button:disabled {
+  background-color: var(--grey);
+}

@@ -1,13 +1,23 @@
+
 import { useMemo, useRef, useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/router'
 import Head from 'next/head';
 import Image from 'next/image';
-import styles from '../styles/Home.module.css';
 import { useQuery } from "@apollo/client";
+import Skeleton from 'react-loading-skeleton'
+import classNames from 'classnames';
+
+import styles from '../styles/Home.module.css';
 import POKEMONS from '../graphql/query/getPokemons';
 import { Pokemon } from '../models/pokemon';
 
 export default function Home() {
+  const router = useRouter()
   const [offset, setOffset] = useState(0);
+  const [compareMode, setCompareMode] = useState(false);
+  const [isFetchMore, setIsFetchMore] = useState(false);
+  const [comparablePokemon, setComparablePokemon] = useState<string[]>([]);
+
   const { data, loading, fetchMore } = useQuery(POKEMONS, { variables: { offset: 0 } });
 
   const count = useMemo(() => {
@@ -22,9 +32,26 @@ export default function Home() {
     });
   }, [data]);
 
+  const handleAddComparablePokemon = (name: string) => {
+    if (comparablePokemon.length >= 2 && !comparablePokemon.includes(name)) return;
+    let newComparable = [...comparablePokemon];
+    if (comparablePokemon.includes(name)) {
+      const idx = newComparable.findIndex(el => el === name);
+      newComparable.splice(idx, 1);
+      setComparablePokemon([...newComparable]);
+    } else {
+      newComparable = [...newComparable, name];
+      setComparablePokemon([...newComparable]);
+    }
+  }
+
+  const handleSubmitComparable = () => {
+    router.push(`compare/${comparablePokemon[0]}/${comparablePokemon[1]}`)
+  }
+
   const handleNextFetch = useCallback(() => {
-    if (loading || count < offset + 10) return;
-    setOffset(off => off + 10);
+    if (isFetchMore || count < offset + 10) return;
+    setIsFetchMore(true);
     fetchMore({
       variables: { offset: offset + 10 },
       updateQuery: (prevResult, { fetchMoreResult }) => {
@@ -34,7 +61,10 @@ export default function Home() {
           pokemons: [...prevResult.pokemons, ...fetchMoreResult.pokemons],
         }
       }
-    })
+    }).finally(() => {
+      setOffset(off => off + 10);
+      setIsFetchMore(false)
+    });
   }, [count, loading, offset, fetchMore])
 
 
@@ -51,7 +81,7 @@ export default function Home() {
     const observe = setTimeout(() => {
       const option = {
         root: null,
-        rootMargin: "0px",
+        rootMargin: "20px",
         threshold: 0
       };
       const observer = new IntersectionObserver(handleObserver, option);
@@ -72,18 +102,38 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Pokédex - {count}
-        </h1>
-
+        <header className={styles.header}>
+          <h1 className={styles.title}>
+            Pokédex - {count}
+          </h1>
+          <div className={styles.action}>
+            {compareMode &&
+              <button disabled={comparablePokemon.length < 2} onClick={() => handleSubmitComparable()}>
+                Submit
+              </button>}
+            <button onClick={() => setCompareMode(prev => !prev)}>
+              {!compareMode ? 'Compare' : 'Cancel'}
+            </button>
+          </div>
+        </header>
         <div className={styles.grid}>
           {
             pokemons.map((el: Pokemon) =>
               <a
                 key={`list-pokemon-${el?.id}`}
-                href={`/${el.name}`}
-                className={styles.card}
+                href={!compareMode ? `/${el.name}` : 'javascript:void(0)'}
+                className={classNames(styles.card, { [styles.disableLink]: compareMode })}
               >
+                {compareMode &&
+                  <span
+                    className={classNames(
+                      styles.selector, {
+                      [styles.disable]: !comparablePokemon.includes(el.name) && comparablePokemon.length > 2,
+                      [styles.selected]: comparablePokemon.includes(el.name),
+                    })}
+                    onClick={() => handleAddComparablePokemon(el.name)}
+                  />
+                }
                 <div className={styles.imageContainer}>
                   <Image
                     alt={`pokemon-${el.id}`}
@@ -98,6 +148,7 @@ export default function Home() {
               </a>)
           }
         </div>
+        {(loading || isFetchMore) && <Skeleton count={10} height={800} />}
         <div ref={loader}></div>
       </main>
     </div>
