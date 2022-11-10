@@ -1,0 +1,70 @@
+.modal {
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  position: fixed;
+  left: 0%;
+  top: 0%;
+}
+
+.header{
+  display: flex;
+  justify-content: space-between;
+}
+
+.container {
+  width: 80%;
+  max-width: 768px;
+  height: 100%;
+  padding-top: 3.2rem;
+  margin: 0 auto;
+}
+
+.filter{
+  margin-top: 0.8rem;
+  margin-bottom: 1.6rem;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.filter > .badge {
+  margin-bottom: 0.8rem;
+  margin-right: 0.8rem;
+}
+
+.footer{
+  position: sticky;
+  bottom: 0;
+  left:0;
+  width: 100%;
+}
+
+.containerButton{
+  padding: 1.6rem 0;
+}
+
+.badge{
+  border-radius: 10px;
+  font-size: 1.6rem;
+  padding: 0.8rem 1.6rem;
+  font-weight: bold;
+  text-transform: capitalize;
+  border: 1px solid var(--grey);
+  transition: 0.2 all ease-in;
+}
+
+.badge.selected{
+  background-color: var(--primary);
+  border: none;
+  color: white;
+}
+
+.buttonSubmit{
+  width: 100%;
+  max-width: 768px;
+  text-align: center;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+}

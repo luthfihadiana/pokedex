@@ -11,10 +11,13 @@ import styles from '../styles/Home.module.css';
 import POKEMONS from '../graphql/query/getPokemons';
 import { Pokemon } from '../models/pokemon';
 import Types from '../components/pokemonType';
+import Filter, { Filters } from '../components/filter';
 
 export default function Home() {
   const router = useRouter()
   const [offset, setOffset] = useState(0);
+  const [showFilter, setShowFilter] = useState(false);
+  const [filter, setFilter] = useState<Filters>({ generation: [], type: [] })
   const [compareMode, setCompareMode] = useState(false);
   const [isFetchMore, setIsFetchMore] = useState(false);
   const [comparablePokemon, setComparablePokemon] = useState<string[]>([]);
@@ -108,6 +111,10 @@ export default function Home() {
             Pokédex - {count}
           </h1>
           <div className={styles.action}>
+            {!compareMode &&
+              <button onClick={() => setShowFilter(true)}>
+                Filter
+              </button>}
             {compareMode &&
               <button disabled={comparablePokemon.length < 2} onClick={() => handleSubmitComparable()}>
                 Submit
@@ -150,6 +157,14 @@ export default function Home() {
               </a>)
           }
         </div>
+        {
+          showFilter &&
+          <Filter
+            value={filter}
+            handler={(filter: Filters) => setFilter(filter)}
+            onClose={() => setShowFilter(false)}
+          />
+        }
         {(loading || isFetchMore) && <Skeleton count={10} height={800} />}
         <div ref={loader}></div>
       </main>
