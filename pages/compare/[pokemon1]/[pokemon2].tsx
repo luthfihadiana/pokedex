@@ -4,6 +4,7 @@ import Head from 'next/head'
 import { useQuery } from "@apollo/client";
 import Image from 'next/image';
 import { useRouter } from "next/router";
+import Link from 'next/link';
 import {
   BsArrowLeftShort,
 } from "react-icons/bs";
@@ -36,10 +37,10 @@ const ComparablePage: NextPage = () => {
     const pokemon1 = data?.pokemon1[0];
     const pokemon2 = data?.pokemon2[0];
     if (!pokemon1 || !pokemon2) return [];
-    return pokemonData1?.pokemonDetail?.[0]?.stats?.map((el: any, idx: number) => ({
+    return pokemon1?.pokemonDetail?.[0]?.stats?.map((el: any, idx: number) => ({
       stat: { ...el?.stat },
       baseStat1: el?.base_stat,
-      baseStat2: pokemonData2?.pokemonDetail?.[0]?.stats?.[idx]?.base_stat,
+      baseStat2: pokemon2?.pokemonDetail?.[0]?.stats?.[idx]?.base_stat,
     }));
   }, [data])
 
@@ -52,9 +53,9 @@ const ComparablePage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <a href="/">
+        <Link href="/">
           <BsArrowLeftShort fontSize={24} />
-        </a>
+        </Link>
         <div className={styles.grid}>
           <div>
             <p><strong>#{pokemonData1?.id}</strong></p>

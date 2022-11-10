@@ -69,7 +69,7 @@ export default function Home() {
       setOffset(off => off + 10);
       setIsFetchMore(false)
     });
-  }, [count, loading, offset, fetchMore])
+  }, [count, offset, fetchMore, isFetchMore])
 
 
   const handleObserver = useCallback((entries: any) => {

@@ -4,6 +4,7 @@ import Head from 'next/head'
 import { useQuery } from "@apollo/client";
 import Image from 'next/image';
 import { useRouter } from "next/router";
+import Link from 'next/link';
 import {
   BsArrowLeftShort,
 } from "react-icons/bs";
@@ -36,9 +37,9 @@ const PokemonPage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <a href="/">
+        <Link href="/">
           <BsArrowLeftShort fontSize={24} />
-        </a>
+        </Link>
         <p><strong>#{pokemonData?.id}</strong></p>
         <h1 className={styles.title}>{pokemonData?.name}</h1>
         <PokemonType pokemonTypes={pokemonData?.pokemonDetail?.[0]?.types.map((el: any) => el?.type?.name) || []} />

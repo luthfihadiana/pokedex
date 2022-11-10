@@ -61,8 +61,9 @@ const Filter = ({ value, handler, onClose }: PropsFilter) => {
         <h3>Types</h3>
         {!loading ? <div className={styles.filter}>
           {
-            types?.map((el: pokemonType) =>
+            types?.map((el: pokemonType, idx: number) =>
               <button
+                key={`filter-types-${el}-${idx}`}
                 className={classNames(styles.badge, { [styles.selected]: filter?.type?.includes(el) })}
                 onClick={() => handleClickType(el)}
               >
@@ -74,8 +75,9 @@ const Filter = ({ value, handler, onClose }: PropsFilter) => {
         <h3>Generation</h3>
         {!loading ? <div className={styles.filter}>
           {
-            generations?.map((el: string) =>
+            generations?.map((el: string, idx: number) =>
               <button
+                key={`filter-generations-${el}-${idx}`}
                 className={classNames(styles.badge, { [styles.selected]: filter?.generation?.includes(el) })}
                 onClick={() => handleClickGeneration(el)}
               >
