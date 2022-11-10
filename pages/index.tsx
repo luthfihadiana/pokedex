@@ -10,6 +10,7 @@ import classNames from 'classnames';
 import styles from '../styles/Home.module.css';
 import POKEMONS from '../graphql/query/getPokemons';
 import { Pokemon } from '../models/pokemon';
+import Types from '../components/pokemonType';
 
 export default function Home() {
   const router = useRouter()
@@ -27,7 +28,7 @@ export default function Home() {
   const pokemons = useMemo(() => {
     if (!data) return [];
     return data.pokemons.map((el: any) => {
-      const pokemon: Pokemon = { id: el?.id, name: el?.name, types: el?.detail?.types?.map((e: any) => e?.type?.name) };
+      const pokemon: Pokemon = { id: el?.id, name: el?.name, types: el?.details?.[0]?.types?.map((e: any) => e?.type?.name) };
       return pokemon;
     });
   }, [data]);
@@ -145,6 +146,7 @@ export default function Home() {
                 </div>
                 <p>#{el.id}</p>
                 <h2>{el.name}</h2>
+                <Types pokemonTypes={el?.types} />
               </a>)
           }
         </div>

@@ -4,9 +4,13 @@ import Head from 'next/head'
 import { useQuery } from "@apollo/client";
 import Image from 'next/image';
 import { useRouter } from "next/router";
+import {
+  BsArrowLeftShort,
+} from "react-icons/bs";
 import POKEMON_COMPARABLE from '../../../graphql/query/getPokemonComparable';
 import styles from '../../../styles/Comparable.module.css';
 import Skeleton from 'react-loading-skeleton'
+import PokemonType from '../../../components/pokemonType';
 
 
 const ComparablePage: NextPage = () => {
@@ -39,7 +43,7 @@ const ComparablePage: NextPage = () => {
     }));
   }, [data])
 
-  if (loading) return <Skeleton count={3}></Skeleton>
+  if (loading) return <Skeleton height={400}></Skeleton>
   return (
     <div className={styles.container}>
       <Head>
@@ -48,10 +52,14 @@ const ComparablePage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
+        <a href="/">
+          <BsArrowLeftShort fontSize={24} />
+        </a>
         <div className={styles.grid}>
           <div>
             <p><strong>#{pokemonData1?.id}</strong></p>
             <h1 className={styles.title}>{pokemonData1?.name}</h1>
+            <PokemonType pokemonTypes={pokemonData1?.pokemonDetail?.[0]?.types.map((el: any) => el?.type?.name)} />
             <div className={styles.imageContainer}>
               <Image
                 alt={`pokemon-${pokemonData1?.id}`}
@@ -65,6 +73,7 @@ const ComparablePage: NextPage = () => {
           <div>
             <p><strong>#{pokemonData2?.id}</strong></p>
             <h1 className={styles.title}>{pokemonData2?.name}</h1>
+            <PokemonType pokemonTypes={pokemonData2?.pokemonDetail?.[0]?.types.map((el: any) => el?.type?.name)} />
             <div className={styles.imageContainer}>
               <Image
                 alt={`pokemon-${pokemonData2?.id}`}

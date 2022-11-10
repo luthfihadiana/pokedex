@@ -4,9 +4,13 @@ import Head from 'next/head'
 import { useQuery } from "@apollo/client";
 import Image from 'next/image';
 import { useRouter } from "next/router";
+import {
+  BsArrowLeftShort,
+} from "react-icons/bs";
 import POKEMON_DETAIL from '../graphql/query/getPokemonDetail';
 import styles from '../styles/Detail.module.css';
-
+import Skeleton from 'react-loading-skeleton';
+import PokemonType from '../components/pokemonType';
 
 const PokemonPage: NextPage = () => {
   const router = useRouter();
@@ -22,7 +26,7 @@ const PokemonPage: NextPage = () => {
     return data?.pokemon[0];
   }, [data])
 
-  console.log(pokemonData)
+  if (loading) return <Skeleton height={400} />
 
   return (
     <div className={styles.container}>
@@ -32,8 +36,12 @@ const PokemonPage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
+        <a href="/">
+          <BsArrowLeftShort fontSize={24} />
+        </a>
         <p><strong>#{pokemonData?.id}</strong></p>
         <h1 className={styles.title}>{pokemonData?.name}</h1>
+        <PokemonType pokemonTypes={pokemonData?.pokemonDetail?.[0]?.types.map((el: any) => el?.type?.name) || []} />
         <div className={styles.imageContainer}>
           <Image
             alt={`pokemon-${pokemonData?.id}`}
